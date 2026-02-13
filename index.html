@@ -90,18 +90,20 @@ button {
 <script>
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
+let runInterval = null;
+
+// Start music on first tap (iOS requirement)
+document.addEventListener("pointerdown", function startMusic() {
+    music.currentTime = 0;
+    music.play();
+    document.removeEventListener("pointerdown", startMusic);
+});
 
 function sayYes() {
     document.getElementById("response").style.display = "block";
 }
 
-// Start music from beginning on first tap (required for iPhone)
-document.addEventListener("click", function startMusic() {
-    music.currentTime = 0;   // Reset to beginning
-    music.play();
-    document.removeEventListener("click", startMusic);
-});
-
+// Move button randomly inside viewport
 function moveButton() {
     const padding = 20;
     const maxX = window.innerWidth - noBtn.offsetWidth - padding;
@@ -115,20 +117,38 @@ function moveButton() {
     noBtn.style.top = randomY + "px";
 }
 
-document.addEventListener("pointermove", (e) => {
+// Detect proximity (desktop + mobile)
+function checkDistance(x, y) {
     const rect = noBtn.getBoundingClientRect();
     const distance = Math.hypot(
-        e.clientX - (rect.left + rect.width / 2),
-        e.clientY - (rect.top + rect.height / 2)
+        x - (rect.left + rect.width / 2),
+        y - (rect.top + rect.height / 2)
     );
 
-    if (distance < 120) {
-        moveButton();
+    if (distance < 140) {
+        if (!runInterval) {
+            runInterval = setInterval(moveButton, 300);
+        }
+    } else {
+        clearInterval(runInterval);
+        runInterval = null;
     }
+}
+
+// Desktop mouse
+document.addEventListener("mousemove", (e) => {
+    checkDistance(e.clientX, e.clientY);
 });
 
-// Also move on tap attempt
-noBtn.addEventListener("touchstart", () => {
+// Mobile touch
+document.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    checkDistance(touch.clientX, touch.clientY);
+});
+
+// If user tries to tap it directly
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
     moveButton();
 });
 </script>

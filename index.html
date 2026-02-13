@@ -21,10 +21,22 @@ body {
 
 .container {
     position: relative;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 26px;
+}
+
+.photo {
+    width: 220px;
+    border-radius: 20px;
+    margin: 15px 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 .buttons {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 button {
@@ -44,7 +56,7 @@ button {
 .no {
     background: #ff4f81;
     color: white;
-    position: relative; /* starts normal */
+    position: relative;
 }
 
 #response {
@@ -60,21 +72,34 @@ button {
 <div class="container">
     <h1>Mamino, will You Be My Valentine? ❤️🦖❤️</h1>
 
+    <img src="photo.jpg" alt="My Valentine" class="photo">
+
     <div class="buttons">
         <button class="yes" onclick="sayYes()">Yes 💖</button>
         <button class="no" id="noBtn">No 💔</button>
     </div>
 
-    <div id="response">YAY! See you soon mami. ❤️✨</div>
+    <div id="response">YAY!! I can't wait ❤️✨</div>
 </div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const noBtn = document.getElementById("noBtn");
-let activated = false;
+const music = document.getElementById("bgMusic");
 
 function sayYes() {
     document.getElementById("response").style.display = "block";
 }
+
+// Start music on first tap (required for iPhone)
+document.addEventListener("click", function startMusic() {
+    music.play();
+    document.removeEventListener("click", startMusic);
+});
 
 function moveButton() {
     const padding = 20;
@@ -98,11 +123,10 @@ document.addEventListener("pointermove", (e) => {
 
     if (distance < 120) {
         moveButton();
-        activated = true;
     }
 });
 
-// Also trigger on tap (iPhone)
+// Also move on tap attempt
 noBtn.addEventListener("touchstart", () => {
     moveButton();
 });

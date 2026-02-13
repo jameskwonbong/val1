@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine? ❤️</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        text-align: center;
+        color: #fff;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        max-width: 400px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 30px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .yes {
+        background-color: #ff4b7d;
+        color: white;
+    }
+
+    .yes:hover {
+        background-color: #ff1f5a;
+        transform: scale(1.1);
+    }
+
+    .no {
+        background-color: white;
+        color: #ff4b7d;
+        position: relative;
+    }
+
+    .no:hover {
+        position: absolute;
+        top: calc(100% * Math.random());
+        left: calc(100% * Math.random());
+    }
+
+    .hidden {
+        display: none;
+        margin-top: 20px;
+        font-size: 1.5rem;
+        animation: pop 0.5s ease forwards;
+    }
+
+    @keyframes pop {
+        from { transform: scale(0.5); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Will You Be My Valentine? 💘</h1>
+    <p>You make my world brighter every day. I’d love to spend Valentine’s Day with you.</p>
+    <div class="buttons">
+        <button class="yes" onclick="sayYes()">Yes 💖</button>
+        <button class="no" onmouseover="moveNo(this)">No 💔</button>
+    </div>
+    <div id="response" class="hidden">YAY!! I can't wait ❤️✨</div>
+</div>
+
+<script>
+function sayYes() {
+    document.getElementById('response').classList.remove('hidden');
+}
+
+function moveNo(button) {
+    const x = Math.floor(Math.random() * window.innerWidth - 100);
+    const y = Math.floor(Math.random() * window.innerHeight - 50);
+    button.style.position = "absolute";
+    button.style.left = x + "px";
+    button.style.top = y + "px";
+}
+</script>
+
+</body>
+</html>

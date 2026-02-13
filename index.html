@@ -95,8 +95,9 @@ function sayYes() {
     document.getElementById("response").style.display = "block";
 }
 
-// Start music on first tap (required for iPhone)
+// Start music from beginning on first tap (required for iPhone)
 document.addEventListener("click", function startMusic() {
+    music.currentTime = 0;   // Reset to beginning
     music.play();
     document.removeEventListener("click", startMusic);
 });

@@ -88,15 +88,49 @@ button {
 </audio>
 
 <script>
+const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
 
-function startMusicOnce() {
-    music.currentTime = 0;
-    music.play();
-    document.removeEventListener("pointerdown", startMusicOnce);
+function sayYes() {
+    document.getElementById("response").style.display = "block";
 }
 
-document.addEventListener("pointerdown", startMusicOnce);
+// Start music from beginning on first tap (required for iPhone)
+document.addEventListener("click", function startMusic() {
+    music.currentTime = 0;   // Reset to beginning
+    music.play();
+    document.removeEventListener("click", startMusic);
+});
+
+function moveButton() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+document.addEventListener("pointermove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const distance = Math.hypot(
+        e.clientX - (rect.left + rect.width / 2),
+        e.clientY - (rect.top + rect.height / 2)
+    );
+
+    if (distance < 120) {
+        moveButton();
+    }
+});
+
+// Also move on tap attempt
+noBtn.addEventListener("touchstart", () => {
+    moveButton();
+});
 </script>
 
 </body>

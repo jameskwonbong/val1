@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Will You Be My Valentine? ❤️</title>
 
 <style>
@@ -14,23 +14,17 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
     text-align: center;
     color: white;
-    overflow: hidden;
 }
 
 .container {
-    padding: 30px;
+    position: relative;
 }
 
 h1 {
     font-size: 28px;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 16px;
-    margin-bottom: 25px;
 }
 
 button {
@@ -40,7 +34,8 @@ button {
     border-radius: 30px;
     margin: 10px;
     cursor: pointer;
-    transition: 0.3s ease;
+    position: relative;
+    transition: transform 0.2s ease;
 }
 
 .yes {
@@ -51,7 +46,7 @@ button {
 .no {
     background: #ff4f81;
     color: white;
-    position: relative;
+    position: absolute;
 }
 
 #response {
@@ -66,3 +61,50 @@ button {
 
 <div class="container">
     <h1>Will You Be My Valentine? 💘</h1>
+    <button class="yes" onclick="sayYes()">Yes 💖</button>
+    <button class="no" id="noBtn">No 💔</button>
+    <div id="response">YAY!! I can't wait ❤️✨</div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+
+function sayYes() {
+    document.getElementById("response").style.display = "block";
+}
+
+// Place button initially somewhere random
+moveButton();
+
+function moveButton() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+// Detect pointer movement (works for mouse + touch)
+document.addEventListener("pointermove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const distance = Math.hypot(
+        e.clientX - (rect.left + rect.width / 2),
+        e.clientY - (rect.top + rect.height / 2)
+    );
+
+    if (distance < 100) {  // how close before it runs
+        moveButton();
+    }
+});
+
+// Also handle touch start for iPhone tap attempts
+noBtn.addEventListener("touchstart", () => {
+    moveButton();
+});
+</script>
+
+</bo

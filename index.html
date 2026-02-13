@@ -17,15 +17,14 @@ body {
     overflow: hidden;
     text-align: center;
     color: white;
-    position: relative;
 }
 
 .container {
-    z-index: 1;
+    position: relative;
 }
 
-h1 {
-    font-size: 28px;
+.buttons {
+    margin-top: 20px;
 }
 
 button {
@@ -45,9 +44,13 @@ button {
 .no {
     background: #ff4f81;
     color: white;
-    position: fixed;   /* 🔥 important change */
-    top: 60%;
-    left: 50%;
+    position: relative; /* starts normal */
+}
+
+#response {
+    margin-top: 20px;
+    font-size: 20px;
+    display: none;
 }
 </style>
 </head>
@@ -56,13 +59,18 @@ button {
 
 <div class="container">
     <h1>Mamino, will You Be My Valentine? ❤️🦖❤️</h1>
-    <button class="yes" onclick="sayYes()">Yes 💖</button>
-    <button class="no" id="noBtn">No 💔</button>
-    <div id="response">See you soon mami ❤️✨</div>
+
+    <div class="buttons">
+        <button class="yes" onclick="sayYes()">Yes 💖</button>
+        <button class="no" id="noBtn">No 💔</button>
+    </div>
+
+    <div id="response">YAY! See you soon mami. ❤️✨</div>
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
+let activated = false;
 
 function sayYes() {
     document.getElementById("response").style.display = "block";
@@ -76,13 +84,10 @@ function moveButton() {
     const randomX = Math.random() * maxX;
     const randomY = Math.random() * maxY;
 
+    noBtn.style.position = "fixed";
     noBtn.style.left = randomX + "px";
     noBtn.style.top = randomY + "px";
 }
-
-window.onload = () => {
-    moveButton();   // make sure it appears on screen first
-};
 
 document.addEventListener("pointermove", (e) => {
     const rect = noBtn.getBoundingClientRect();
@@ -93,8 +98,15 @@ document.addEventListener("pointermove", (e) => {
 
     if (distance < 120) {
         moveButton();
+        activated = true;
     }
+});
+
+// Also trigger on tap (iPhone)
+noBtn.addEventListener("touchstart", () => {
+    moveButton();
 });
 </script>
 
-</bo
+</body>
+</html>

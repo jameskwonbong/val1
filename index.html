@@ -17,10 +17,11 @@ body {
     overflow: hidden;
     text-align: center;
     color: white;
+    position: relative;
 }
 
 .container {
-    position: relative;
+    z-index: 1;
 }
 
 h1 {
@@ -34,8 +35,6 @@ button {
     border-radius: 30px;
     margin: 10px;
     cursor: pointer;
-    position: relative;
-    transition: transform 0.2s ease;
 }
 
 .yes {
@@ -46,13 +45,9 @@ button {
 .no {
     background: #ff4f81;
     color: white;
-    position: absolute;
-}
-
-#response {
-    margin-top: 20px;
-    font-size: 20px;
-    display: none;
+    position: fixed;   /* 🔥 important change */
+    top: 60%;
+    left: 50%;
 }
 </style>
 </head>
@@ -73,9 +68,6 @@ function sayYes() {
     document.getElementById("response").style.display = "block";
 }
 
-// Place button initially somewhere random
-moveButton();
-
 function moveButton() {
     const padding = 20;
     const maxX = window.innerWidth - noBtn.offsetWidth - padding;
@@ -88,7 +80,10 @@ function moveButton() {
     noBtn.style.top = randomY + "px";
 }
 
-// Detect pointer movement (works for mouse + touch)
+window.onload = () => {
+    moveButton();   // make sure it appears on screen first
+};
+
 document.addEventListener("pointermove", (e) => {
     const rect = noBtn.getBoundingClientRect();
     const distance = Math.hypot(
@@ -96,14 +91,9 @@ document.addEventListener("pointermove", (e) => {
         e.clientY - (rect.top + rect.height / 2)
     );
 
-    if (distance < 100) {  // how close before it runs
+    if (distance < 120) {
         moveButton();
     }
-});
-
-// Also handle touch start for iPhone tap attempts
-noBtn.addEventListener("touchstart", () => {
-    moveButton();
 });
 </script>
 
